@@ -1,5 +1,5 @@
 #include "anomaly_detection_util.h"
-#include <math.h>
+#include <cmath>
 
 // returns the variance of X
 float var(float *x, int size) {
@@ -7,15 +7,15 @@ float var(float *x, int size) {
 
     // calculate the total sum power two
     for (int i = 0; i < size; i++) {
-        sumPower2 += (*(x + i)) ^ 2;
+        sumPower2 += std::pow(*(x + i), 2);
     }
 
     // calculate the average value
     u = avg(x, size);
 
     // calculate the variance
-    varX = (sumPower2 / size) - (u ^ 2);
-    return varx;
+    varX = (sumPower2 / size) - (std::pow(u, 2));
+    return varX;
 }
 
 // returns the covariance of X and Y
@@ -51,13 +51,13 @@ Line linear_reg(Point **points, int size) {
     float arrX[size];
     float arrY[size];
     for (int i = 0; i < size; i++) {
-        Point p = *(points + i);
-        arrX[i] = p.x;
-        arrY[i] = p.y;
+        Point *p = *(points + i);
+        arrX[i] = p->x;
+        arrY[i] = p->y;
     }
     a = cov(&arrX[0], &arrY[0], size) / var(&arrX[0], size);
     b = avg(&arrY[0], size) - (a * avg(&arrX[0], size));
-    return new Line(a, b);
+    return Line(a, b);
 }
 
 //returns the deviation between point p and the line equation of the points
@@ -72,7 +72,7 @@ float dev(Point p, Line l) {
 
 // returns the average of an array X with length SIZE
 float avg(float *x, int size) {
-    float sum;
+    float sum = 0;
     for (int i = 0; i < size; i++) {
         sum += *(x + i);
     }
