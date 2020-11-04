@@ -37,4 +37,7 @@ float dev(Point p, Point **points, int size);
 // returns the deviation between point p and the line
 float dev(Point p, Line l);
 
+// returns the average of an array X with length SIZE
+float avg(float *x, int size);
+
 #endif //ANOMALY_DETECTOR_ANOMALY_DETECTION_UTIL_H
