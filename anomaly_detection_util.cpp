@@ -57,7 +57,7 @@ Line linear_reg(Point **points, int size) {
     }
     a = cov(&arrX[0], &arrY[0], size) / var(&arrX[0], size);
     b = avg(&arrY[0], size) - (a * avg(&arrX[0], size));
-    return Line(a, b);
+    return {a, b};
 }
 
 //returns the deviation between point p and the line equation of the points
@@ -72,6 +72,7 @@ float dev(Point p, Line l) {
 
 // returns the average of an array X with length SIZE
 float avg(float *x, int size) {
+
     float sum = 0;
     for (int i = 0; i < size; i++) {
         sum += *(x + i);
