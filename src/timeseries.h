@@ -11,7 +11,6 @@ class TimeSeries {
 
 public:
     std::map<std::string, std::vector<float>> Data;
-    //std::vector<std::vector<std::string>> Data;
 
     TimeSeries(const char *CSVfileName) {
         bool init = true;
@@ -35,6 +34,10 @@ public:
             }
         }
     }
+
+    int featureSize() const;
+    int linesSize() const;
+    float getValue(std::string s, int line) const;
 
     void print();
 };

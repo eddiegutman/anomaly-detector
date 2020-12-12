@@ -10,3 +10,15 @@ void TimeSeries::print() {
     }
 }
 
+int TimeSeries::featureSize() const{
+    return Data.size();
+}
+
+int TimeSeries::linesSize() const{
+    return Data.begin()->second.size();
+}
+
+float TimeSeries::getValue(std::string s, int line) const {
+    return Data.find(s)->second[line];
+}
+
