@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
 
-add_executable(anomaly_detector src/MainTrain.cpp
+add_executable(anomaly_detector src/MainTrain2.cpp
         src/AnomalyDetector.h
         src/SimpleAnomalyDetector.cpp
         src/SimpleAnomalyDetector.h
