@@ -3,7 +3,6 @@
 
 // returns the average of an array X with length SIZE
 float avg(float *x, int size) {
-
     float sum = 0;
     for (int i = 0; i < size; i++)
         sum += *(x + i);
@@ -63,7 +62,7 @@ Line linear_reg(Point **points, int size) {
     }
     a = cov(x, y, size) / var(x, size);
     b = avg(y, size) - (a * avg(x, size));
-    return Line(a, b);
+    return {a, b};
 }
 
 //returns the deviation between point p and the line equation of the points

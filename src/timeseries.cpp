@@ -1,7 +1,12 @@
+#include <iostream>
 #include "timeseries.h"
 
-void print(){
-    for (std::vector<std::vector<std::string>>::const_iterator it = this.Lines.begin(); i != path.end(); ++i)
-        std::cout << *i << ' ';
+void TimeSeries::print() {
+    for (auto & it : Data) {
+        for (auto & ip : it.second) {
+            std::cout << ip << ' ';
+        }
+        std::cout << std::endl;
+    }
 }
 
