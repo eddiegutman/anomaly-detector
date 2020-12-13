@@ -90,7 +90,6 @@ Circle welzel(std::vector<Point> &P, std::vector<Point> R, size_t size) {
 
     Point p = P[index];
     std::swap(P[index], P[size - 1]);
-    //P.pop_back();
     Circle D = welzel(P, R, size - 1);
     if (isInCircle(D, p))
         return D;
