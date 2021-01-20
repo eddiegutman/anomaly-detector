@@ -32,9 +32,36 @@ public:
 		return cf;
 	}
 
+protected:
+    /**
+     * finds the max threshold of given array of points, from given linear regression.
+     *
+     * @param points an array of points
+     * @param lineReg linear regression
+     * @param size the size of the points array
+     * @return max threshold
+     */
+
     float findThreshold(Point **points, Line lineReg, size_t size);
 
+    /**
+     * creates an array of points from two given vectors.
+     *
+     * @param x given x vector
+     * @param y given y vector
+     * @return an array of points
+     */
     Point **createArray(vector<float> x, vector<float> y);
+
+    /**
+     * adds the given pair of correlated features, to the correlated features vector.
+     *
+     * @param f1 the name of the first feature
+     * @param f2 the name of the second feature
+     * @param pearson the pearson of the two features
+     * @param lineReg linear regression of the two features
+     * @param threshold the threshold of the two features
+     */
 
     void addNormal(string &f1, string &f2, float pearson, Line lineReg, float threshold);
 };
