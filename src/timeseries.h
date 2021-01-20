@@ -66,6 +66,14 @@ public:
     int featureSize() const;
 
     /**
+     * returns the number of attributes in the TimeSeries
+     *
+     * @return the number of attributes in the TimeSeries
+     */
+
+    int attributesSize() const;
+
+    /**
      * returns the number of lines in the TimeSeries
      *
      * @return the number of lines in the TimeSeries

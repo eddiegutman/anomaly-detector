@@ -24,6 +24,7 @@ public:
 	SimpleAnomalyDetector();
 	virtual ~SimpleAnomalyDetector();
 
+
 	virtual void learnNormal(const TimeSeries& ts);
 	virtual vector<AnomalyReport> detect(const TimeSeries& ts);
 
@@ -31,6 +32,11 @@ public:
 		return cf;
 	}
 
+    float findThreshold(Point **points, Line lineReg, size_t size);
+
+    Point **createArray(vector<float> x, vector<float> y);
+
+    void addNormal(string &f1, string &f2, float pearson, Line lineReg, float threshold);
 };
 
 

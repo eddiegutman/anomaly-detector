@@ -5,6 +5,10 @@ int TimeSeries::featureSize() const {
     return Data.size();
 }
 
+int TimeSeries::attributesSize() const {
+    return Data.begin()->second.size();
+}
+
 int TimeSeries::linesSize() const {
     return Data.begin()->second.size();
 }
