@@ -12,6 +12,12 @@ class TimeSeries {
 public:
     std::map<std::string, std::vector<float>> Data;
 
+    /**
+     * creates a new TimeSeries from a given csv file.
+     *
+     * @param CSVfileName given csv file.
+     */
+
     TimeSeries(const char *CSVfileName) {
         bool init = true;
 
@@ -51,16 +57,44 @@ public:
         }
     }
 
-    // returns the number of features in the timeseries
+    /**
+     * returns the number of features in the TimeSeries
+     *
+     * @return the number of features in the TimeSeries
+     */
+
     int featureSize() const;
 
-    // return the number of lines in the timeseries
+    /**
+     * returns the number of lines in the TimeSeries
+     *
+     * @return the number of lines in the TimeSeries
+     */
+
     int linesSize() const;
 
-    // returns the value of line in feature s
-    float getValue(std::string s, int line) const;
+    /**
+     * returns the value of feature s in timestamp t
+     *
+     * @param s the name of the feature
+     * @param t given timestamp
+     * @return the value of feature s in timestamp t
+     */
 
-    // prints the timeseries
+    float getValue(std::string s, int t) const;
+
+    /**
+     * returns the vector of feature s
+     *
+     * @param s the name of the feature
+     * @return the vector of feature s
+     */
+
+    std::vector<float> getAttributes(std::string s) const;
+
+    /**
+     * prints the TimeSeries
+     */
     void print() const;
 };
 

@@ -75,7 +75,7 @@ Circle welzel(std::vector<Point> &P, std::vector<Point> R, size_t size) {
     return welzel(P, R, size - 1);
 }
 
-// implement
+// finds the minimum enclosing circle
 Circle findMinCircle(Point **points, size_t size) {
     std::vector<Point> v;
     v.reserve(size);
