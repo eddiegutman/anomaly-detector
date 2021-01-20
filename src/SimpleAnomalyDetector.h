@@ -15,11 +15,15 @@ struct correlatedFeatures{
 	float corrlation;
 	Line lin_reg;
 	float threshold;
+	Point *center;
+	bool isLinear;
 };
 
 
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
+protected:
 	vector<correlatedFeatures> cf;
+	float threshold;
 public:
 	SimpleAnomalyDetector();
 	virtual ~SimpleAnomalyDetector();
@@ -32,6 +36,10 @@ public:
 		return cf;
 	}
 
+    void setCorrelationThreshold(float threshold){
+        this->threshold=threshold;
+    }
+
 protected:
     /**
      * finds the max threshold of given array of points, from given linear regression.
@@ -42,7 +50,7 @@ protected:
      * @return max threshold
      */
 
-    float findThreshold(Point **points, Line lineReg, size_t size);
+    static float findThreshold(Point **points, Line lineReg, size_t size);
 
     /**
      * creates an array of points from two given vectors.
@@ -51,7 +59,7 @@ protected:
      * @param y given y vector
      * @return an array of points
      */
-    Point **createArray(vector<float> x, vector<float> y);
+    static Point **createArray(vector<float> x, vector<float> y);
 
     /**
      * adds the given pair of correlated features, to the correlated features vector.
@@ -59,11 +67,22 @@ protected:
      * @param f1 the name of the first feature
      * @param f2 the name of the second feature
      * @param pearson the pearson of the two features
-     * @param lineReg linear regression of the two features
-     * @param threshold the threshold of the two features
+     * @param points an array of points
+     * @param ts this TimeSeries
      */
 
-    void addNormal(string &f1, string &f2, float pearson, Line lineReg, float threshold);
+    virtual void addNormal(string &f1, string &f2, float pearson, Point **points, const TimeSeries &ts);
+
+    /**
+     * checks if given point is an anomaly to the corresponding correlated features.
+     *
+     * @param p given point to check
+     * @param c given correlated features
+     * @return ture if the point is anomaly and false otherwise
+     */
+
+    virtual bool isAnomalous(Point p, const correlatedFeatures &c);
+
 };
 
 

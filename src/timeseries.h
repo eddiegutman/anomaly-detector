@@ -74,14 +74,6 @@ public:
     int attributesSize() const;
 
     /**
-     * returns the number of lines in the TimeSeries
-     *
-     * @return the number of lines in the TimeSeries
-     */
-
-    int linesSize() const;
-
-    /**
      * returns the value of feature s in timestamp t
      *
      * @param s the name of the feature

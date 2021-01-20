@@ -9,10 +9,6 @@ int TimeSeries::attributesSize() const {
     return Data.begin()->second.size();
 }
 
-int TimeSeries::linesSize() const {
-    return Data.begin()->second.size();
-}
-
 float TimeSeries::getValue(std::string s, int t) const {
     return Data.find(s)->second[t];
 }
@@ -20,7 +16,6 @@ float TimeSeries::getValue(std::string s, int t) const {
 std::vector<float> TimeSeries::getAttributes(std::string s) const {
     return Data.find(s)->second;
 }
-
 
 void TimeSeries::print() const {
     for (auto &it : Data) {

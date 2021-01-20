@@ -20,6 +20,8 @@ public:
     Circle(Point c, float r) : center(c), radius(r) {}
 };
 
+float dist(Point a, Point b);
+
 /**
  * calculates the distance between two points.
  *
