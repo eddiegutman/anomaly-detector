@@ -89,12 +89,11 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
     std::vector<AnomalyReport> reports;
 
-    // traverse on the each line in the new given timeseries.
-    int lines = ts.attributesSize();
-    for (int i = 0; i < lines; i++) {
-
-        // traverse each correlated pair in this.
-        for (auto &it : cf) {
+    int rows = ts.attributesSize();
+    // traverse each correlated pair in this.
+    for (auto &it : cf) {
+        // traverse on the each line in the new given timeseries.
+        for (int i = 0; i < rows; i++) {
 
             // create a point from the value of current correlated pair.
             float x = ts.getValue(it.feature1, i);

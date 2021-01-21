@@ -10,6 +10,7 @@ using namespace std;
 
 class CLI {
 	DefaultIO* dio;
+	vector<Command*> menu;
 	// you can add data members
 public:
 	CLI(DefaultIO* dio);

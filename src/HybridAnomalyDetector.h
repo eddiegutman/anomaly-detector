@@ -11,6 +11,7 @@ public:
 	HybridAnomalyDetector();
 	virtual ~HybridAnomalyDetector();
 
+protected:
     void addNormal(string &f1, string &f2, float pearson, Point **points, const TimeSeries &ts) override;
     bool isAnomalous(Point p, const correlatedFeatures &c) override;
 

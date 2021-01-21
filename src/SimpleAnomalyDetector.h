@@ -39,6 +39,9 @@ public:
     void setCorrelationThreshold(float threshold){
         this->threshold=threshold;
     }
+    float getCorrelationThreshold() {
+        return this->threshold;
+    }
 
 protected:
     /**

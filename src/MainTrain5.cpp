@@ -1,7 +1,7 @@
 /*
  * run2.cpp
  *
- *  Created on: 8 בדצמ× 2019
+ *
  *      Author: Eli
  */
 
@@ -79,6 +79,7 @@ void check(string outputFile,string expectedOutputFile){
 
  //small test
 int main(){
+
 	STDtest std("input.txt","output.txt");
 	CLI cli(&std);
 	cli.start();
