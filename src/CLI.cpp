@@ -16,7 +16,7 @@ CLI::~CLI()= default;
 void CLI::start(){
     int input;
     do {
-        dio->write("Welcome to The Anomaly Detection Server.\n");
+        dio->write("Welcome to the Anomaly Detection Server.\n");
         dio->write("Please choose an option:\n");
         for(auto & c : menu){
             dio->write(c->description);

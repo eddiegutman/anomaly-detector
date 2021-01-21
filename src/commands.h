@@ -28,7 +28,6 @@ public:
     // you may add additional methods here
 };
 
-// you may add here helper classes
 class StandartIO : public DefaultIO {
     string read() override {
         string input;
@@ -83,9 +82,13 @@ public:
     vector<AnomalyReport>* getReports() {
         return reports;
     }
+
+    unsigned long getTimeStamps() {
+        return test->attributesSize();
+    }
 };
 
-// you may edit this class
+
 class Command {
 public:
     const string description;
@@ -99,10 +102,6 @@ public:
 
     virtual ~Command() = default;
 };
-
-// implement here your command classes
-
-
 
 class UploadCsvCommand : public Command {
 public:
@@ -183,8 +182,86 @@ public:
     UploadAnomalyAndAnalyzeCommand(DefaultIO *dio, SharedInfo *info) :
     Command(dio,"5.upload anomalies and analyze results\n", info){};
 
-    void execute() override {
+    static vector<pair<long, long>> compactReports(vector<AnomalyReport> *ar) {
+        vector<pair<long, long>> reports;
+        auto &r = *ar->begin();
+        long start = r.timeStep;
+        long finish = r.timeStep;
+        string desc = r.description;
 
+        for (auto &r : *ar) {
+            if (r.timeStep == ar->size()) {
+                finish = r.timeStep;
+                reports.emplace_back(start, finish);
+            }
+            if (r.description != desc) {
+                reports.emplace_back(start, finish);
+                start = r.timeStep;
+                finish = r.timeStep;
+                desc = r.description;
+            } else {
+                finish = r.timeStep;
+            }
+        }
+        return reports;
+    }
+
+    static bool areIntersecting(pair<long, long> a, pair<long, long> b) {
+        if ((a.first < b.first && a.second < b.first) || (b.first < a.first && b.second < a.first))
+            return false;
+        if (a.second == b.first || b.first == a.second)
+            return false;
+        return true;
+    }
+
+    void execute() override {
+        string line, cell1, cell2;
+        vector<pair<long, long>> userReports, compactAnomalyReports;
+
+        dio->write("Please upload your local anomalies file.\n");
+        while ((line = dio->read()) != "done") {
+            stringstream ss(line);
+            getline(ss, cell1, ',');
+            getline(ss, cell2, ',');
+            userReports.emplace_back(stoi(cell1), stoi(cell2));
+        }
+        dio->write("Upload complete.\n");
+
+
+        compactAnomalyReports = compactReports(info->getReports());
+        unsigned long positive = userReports.size();
+        unsigned long negative = info->getTimeStamps() -1;
+
+        for (auto ur : userReports)
+            negative -= (ur.second - ur.first + 1);
+
+        unsigned long falsePositive = 0, truePositive = 0;
+        bool found = false;
+        for (auto ar : compactAnomalyReports) {
+            for (auto ur : userReports) {
+                if (areIntersecting(ar, ur)) {
+                    truePositive++;
+                    found = true;
+                }
+            }
+
+            if (!found)
+                falsePositive++;
+            found = false;
+        }
+
+        float tpRate, fpRate;
+        tpRate = (float)truePositive / (float)positive;
+        tpRate = floorf(tpRate * 1000) / 1000;
+        fpRate = (float)falsePositive / (float)negative;
+        fpRate = floorf(fpRate * 1000) / 1000;
+
+        dio->write("True Positive Rate: ");
+        dio->write((float)tpRate);
+        dio->write("\n");
+        dio->write("False Positive Rate: ");
+        dio->write((float)fpRate);
+        dio->write("\n");
     }
 };
 
