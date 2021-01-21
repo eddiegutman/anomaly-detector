@@ -38,7 +38,6 @@ void SimpleAnomalyDetector::addNormal(std::string &f1, std::string &f2, float pe
         c.corrlation = pearson;
         c.lin_reg = linear_reg(points, size);
         c.threshold = findThreshold(points, c.lin_reg, size) * (float)1.1;
-        c.isLinear = true;
         cf.push_back(c);
     }
 }

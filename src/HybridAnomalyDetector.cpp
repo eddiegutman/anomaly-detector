@@ -16,19 +16,18 @@ void HybridAnomalyDetector::addNormal(string &f1, string &f2, float pearson, Poi
         c.feature1 = f1;
         c.feature2 = f2;
         c.corrlation = pearson;
-        c.lin_reg = linear_reg(points, size);
         Circle min = findMinCircle(points, size);
-        c.center = &min.center;
-        c.threshold = min.radius * 1.1;
-        c.isLinear = false;
+        c.x = min.center.x;
+        c.y = min.center.y;
+        c.threshold = min.radius * (float) 1.1;
         SimpleAnomalyDetector::cf.push_back(c);
     }
 }
 
 bool HybridAnomalyDetector::isAnomalous(Point p, const correlatedFeatures &c) {
-    if (c.isLinear)
+    if (c.corrlation >= 0.9)
         return SimpleAnomalyDetector::isAnomalous(p, c);
     else
-        return !isInCircle(p,Circle(*c.center, c.threshold));
+        return !isInCircle(p,Circle(Point(c.x, c.y), c.threshold));
 }
 

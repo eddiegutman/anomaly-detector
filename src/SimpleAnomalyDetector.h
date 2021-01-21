@@ -15,8 +15,8 @@ struct correlatedFeatures{
 	float corrlation;
 	Line lin_reg;
 	float threshold;
-	Point *center;
-	bool isLinear;
+	float x;
+	float y;
 };
 
 
