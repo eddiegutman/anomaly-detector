@@ -8,16 +8,9 @@
 #include <cmath>
 #include <algorithm>
 #include <random>
+#include "anomaly_detection_util.h"
 
 using namespace std;
-
-// ------------ DO NOT CHANGE -----------
-class Point {
-public:
-    float x, y;
-
-    Point(float x, float y) : x(x), y(y) {}
-};
 
 class Circle {
 public:
@@ -26,94 +19,99 @@ public:
 
     Circle(Point c, float r) : center(c), radius(r) {}
 };
-// --------------------------------------
-// you may add helper functions here
 
-// calculates the distance between two points.
-float pDistance(const Point &A, const Point &B) {
-    return std::sqrt(std::pow(A.x - B.x, 2) + std::pow(A.y - B.y, 2));
-}
+/**
+ * calculates the distance between two points.
+ *
+ * @param A first point
+ * @param B second point
+ * @return the distance between the two points
+ */
 
-// return the middle point between two points.
-Point getMid(const Point &A, const Point &B) {
-    return {(A.x + B.x) / (float) 2.0, (A.y + B.y) / (float) 2.0};
-}
+float pDistance(const Point &A, const Point &B);
 
-// checks if a given point is in the given circle.
-bool isInCircle(const Point &p, const Circle &c) {
-    return (pDistance(p, c.center) <= c.radius);
-}
+/**
+ * returns the middle point between two points.
+ *
+ * @param A first point
+ * @param B second point
+ * @return the middle point between two points
+ */
 
-// calculate center of circle, which 3 given points are on its boundaries.
-// copied from stackoverflow.com, created by Russell Strauss.
-Point circleCenter(const Point &A, const Point &B, const Point &C) {
-    float yDelta_a = B.y - A.y;
-    float xDelta_a = B.x - A.x;
-    float yDelta_b = C.y - B.y;
-    float xDelta_b = C.x - B.x;
-    Point center = Point(0, 0);
+Point getMid(const Point &A, const Point &B);
 
-    float aSlope = yDelta_a / xDelta_a;
-    float bSlope = yDelta_b / xDelta_b;
-    center.x = (aSlope * bSlope * (A.y - C.y) + bSlope * (A.x + B.x)
-            - aSlope * (B.x + C.x)) / (2 * (bSlope - aSlope));
-    center.y = -1 * (center.x - (A.x + B.x) / 2) / aSlope + (A.y + B.y) / 2;
+/**
+ * checks if a given point is in the given circle.
+ *
+ * @param p given point
+ * @param c given circle
+ * @return true if the point is in the circle and false otherwise
+ */
 
-    return center;
-}
+bool isInCircle(const Point &p, const Circle &c);
 
-// create a circle from 2 given points.
-Circle createCircle(const Point &A, const Point &B) {
-    Point center = getMid(A, B);
-    float radius = pDistance(center, A);
-    return {center, radius};
-}
+/**
+ * calculate center of circle, which 3 given points are on its boundaries.
+ * copied from stackoverflow.com, created by Russell Strauss.
+ *
+ * @param A first point
+ * @param B second point
+ * @param C third point
+ * @return circle center point
+ */
 
-// create a circle from 3 given points.
-Circle createCircle(const Point &A, const Point &B, const Point &C) {
-    Point center = circleCenter(A, B, C);
-    float radius = pDistance(center, A);
-    return {center, radius};
-}
+Point circleCenter(const Point &A, const Point &B, const Point &C);
 
-// the trivial case of the welzel algorithm.
-Circle trivial(const std::vector<Point> &R) {
-    if (R.empty())
-        return {{0, 0}, 0};
-    else if (R.size() == 1)
-        return {R[0], 0};
-    else if (R.size() == 2)
-        return createCircle(R[0], R[1]);
+/**
+ * create a circle from 2 given points.
+ *
+ * @param A first point
+ * @param B second point
+ * @return circle
+ */
 
-    return createCircle(R[0], R[1], R[2]);
-}
+Circle createCircle(const Point &A, const Point &B);
 
-// recursively finds the minimum enclosing circle
-Circle welzel(std::vector<Point> &P, std::vector<Point> R, size_t size) {
-    if (size == 0 || R.size() == 3)
-        return trivial(R);
+/**
+ * create a circle from 3 given points.
+ *
+ * @param A first point
+ * @param B second point
+ * @param C third point
+ * @return circle
+ */
 
-    int index = rand() % size;
+Circle createCircle(const Point &A, const Point &B, const Point &C);
 
-    Point p = P[index];
-    std::swap(P[index], P[size - 1]);
-    Circle D = welzel(P, R, size - 1);
-    if (isInCircle(p, D))
-        return D;
+/**
+ * the trivial case of the welzel algorithm.
+ *
+ * @param R a vector on points
+ * @return circle
+ */
 
-    R.push_back(p);
-    return welzel(P, R, size - 1);
-}
+Circle trivial(const std::vector<Point> &R);
 
-// implement
-Circle findMinCircle(Point **points, size_t size) {
-    std::vector<Point> v;
-    v.reserve(size);
-    for (int i = 0; i < size; i++)
-        v.push_back(*points[i]);
+/**
+ * recursively finds the minimum enclosing circle
+ *
+ * @param P vector of points
+ * @param R helping vector
+ * @param size the size of the first vector
+ * @return minimum enclosing circle
+ */
 
-    return welzel(v, {}, size);
-}
+Circle welzel(std::vector<Point> &P, std::vector<Point> R, size_t size);
+
+/**
+ * finds the minimum enclosing circle of given array of points.
+ *
+ * @param points an array of points
+ * @param size the size of the array
+ * @return minimum enclosing circle
+ */
+
+Circle findMinCircle(Point **points, size_t size);
 
 
 #endif /* MINCIRCLE_H_ */
